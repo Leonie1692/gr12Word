@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 12 Word Processing Mindmap - Iframe Version</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            overflow: auto;
+            padding: 10px;
+        }
+        
+        .mindmap-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .mindmap {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 20px;
+            flex: 1;
+            overflow: auto;
+            min-height: 0;
+        }
+        
+        .central-node {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .central-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .central-subtitle {
+            font-size: 1em;
+            color: #7f8c8d;
+        }
+        
+        .branches {
+            display: flex;
+            gap: 15px;
+            height: calc(100% - 120px);
+        }
+        
+        .branch {
+            flex: 1;
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .branch:hover {
+            transform: translateY(-2px);
+        }
+        
+        .branch::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--branch-color);
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .branch.grade10 { --branch-color: #3498db; }
+        .branch.grade11 { --branch-color: #e74c3c; }
+        .branch.grade12 { --branch-color: #2ecc71; }
+        
+        .branch-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 15px;
+            text-align: center;
+            padding: 8px;
+            background: var(--branch-color);
+            border-radius: 8px;
+            margin: -15px -15px 15px -15px;
+        }
+        
+        .topic-group {
+            margin-bottom: 12px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .topic-title {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #34495e;
+            cursor: pointer;
+            padding: 10px 12px;
+            background: #f8f9fa;
+            border-left: 3px solid var(--branch-color);
+            transition: all 0.2s ease;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .topic-title:hover {
+            background: #e9ecef;
+        }
+        
+        .subtopics {
+            max-height: 200px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .subtopics.collapsed {
+            max-height: 0;
+        }
+        
+        .subtopic {
+            color: #6c757d;
+            padding: 6px 12px;
+            font-size: 0.8em;
+            border-left: 2px solid var(--branch-color);
+            margin-left: 10px;
+            margin-bottom: 2px;
+            background: #f8f9fa;
+            transition: all 0.2s ease;
+        }
+        
+        .subtopic:hover {
+            background: #e9ecef;
+            color: #495057;
+        }
+        
+        .toggle-icon {
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+        
+        .topic-title.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+        
+        /* Responsive design for smaller iframes */
+        @media (max-width: 900px) {
+            .branches {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .branch {
+                margin-bottom: 10px;
+                max-height: 300px;
+            }
+            
+            .central-title {
+                font-size: 1.5em;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .mindmap {
+                padding: 15px;
+            }
+            
+            .central-title {
+                font-size: 1.3em;
+            }
+            
+            .branch-title {
+                font-size: 1.1em;
+            }
+            
+            .topic-title {
+                font-size: 0.85em;
+            }
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="mindmap-container">
+        <div class="mindmap">
+            <div class="central-node">
+                <div class="central-title">Grade 12 Word Processing</div>
+                <div class="central-subtitle">Complete Curriculum Overview</div>
+            </div>
+            
+            <div class="branches">
+                <div class="branch grade10">
+                    <div class="branch-title">Grade 10</div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Work with text
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">What is a word processor</div>
+                            <div class="subtopic">Basic Work Environment</div>
+                            <div class="subtopic">How to Work with Files</div>
+                            <div class="subtopic">Create a document</div>
+                            <div class="subtopic">Character formatting</div>
+                        </div>
+                    </div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Formatting Pages and Paragraphs
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">Basic page layout</div>
+                            <div class="subtopic">Paragraph formatting</div>
+                            <div class="subtopic">Formatting with Style</div>
+                        </div>
+                    </div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Editing
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">Deleting, moving, and copying text</div>
+                            <div class="subtopic">Find and replace</div>
+                            <div class="subtopic">Checking spelling</div>
+                            <div class="subtopic">Automatic editing options</div>
+                            <div class="subtopic">Spacing and punctuation</div>
+                        </div>
+                    </div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Add graphs
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">Inserting and formatting images</div>
+                            <div class="subtopic">Other Graphic Objects</div>
+                            <div class="subtopic">Page Background</div>
+                            <div class="subtopic">SmartArt</div>
+                        </div>
+                    </div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Further formatting
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">Bullet points and numbered lists</div>
+                            <div class="subtopic">Tab stops</div>
+                            <div class="subtopic">Indentation of paragraphs</div>
+                            <div class="subtopic">Page Headers and Footers</div>
+                            <div class="subtopic">Soft enter</div>
+                        </div>
+                    </div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Tables
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">Basic Tables</div>
+                            <div class="subtopic">Rows and columns</div>
+                            <div class="subtopic">Formatting tables</div>
+                            <div class="subtopic">Sorting and calculations</div>
+                            <div class="subtopic">Text and tables</div>
+                        </div>
+                    </div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Other useful facilities
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">Page layout with columns</div>
+                            <div class="subtopic">Truncation</div>
+                            <div class="subtopic">The Use of Comments</div>
+                            <div class="subtopic">Protect a document</div>
+                            <div class="subtopic">Hyperlinks</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="branch grade11">
+                    <div class="branch-title">Grade 11</div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Working with files
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">Common File commands</div>
+                            <div class="subtopic">Import from other file formats</div>
+                            <div class="subtopic">Help</div>
+                            <div class="subtopic">Editing</div>
+                        </div>
+                    </div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Page formatting
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">Understanding and Using Sections</div>
+                            <div class="subtopic">Page captions and captions</div>
+                            <div class="subtopic">Themes</div>
+                            <div class="subtopic">Cover page</div>
+                        </div>
+                    </div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Formatting paragraphs
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">Bulleted and numbered lists</div>
+                            <div class="subtopic">Custom Spacing</div>
+                        </div>
+                    </div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Shapes and templates
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">Word Forms</div>
+                            <div class="subtopic">Templates</div>
+                        </div>
+                    </div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Styles
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">What is a style?</div>
+                            <div class="subtopic">Using Existing Styles</div>
+                            <div class="subtopic">Changing and creating styles</div>
+                        </div>
+                    </div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Mail Merge
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">How Mail Merge Works</div>
+                            <div class="subtopic">Steps to follow</div>
+                        </div>
+                    </div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Reference
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">Contents</div>
+                            <div class="subtopic">Footnotes</div>
+                            <div class="subtopic">Captions</div>
+                            <div class="subtopic">Citations and bibliographies</div>
+                            <div class="subtopic">Index</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="branch grade12">
+                    <div class="branch-title">Grade 12</div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Review documents
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">Introduction</div>
+                            <div class="subtopic">Track changes</div>
+                        </div>
+                    </div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Working with long documents
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">Bookmarks</div>
+                            <div class="subtopic">Hyperlinks and cross-references</div>
+                            <div class="subtopic">Manipulate rule and pagebreaks</div>
+                        </div>
+                    </div>
+                    
+                    <div class="topic-group">
+                        <div class="topic-title" onclick="toggleSubtopics(this)">
+                            Integrate, check, and share documents
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="subtopics">
+                            <div class="subtopic">Mail Merge</div>
+                            <div class="subtopic">Preparation and sharing of files</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleSubtopics(element) {
+            const subtopics = element.nextElementSibling;
+            const isCollapsed = subtopics.classList.contains('collapsed');
+            
+            if (isCollapsed) {
+                subtopics.classList.remove('collapsed');
+                element.classList.remove('collapsed');
+            } else {
+                subtopics.classList.add('collapsed');
+                element.classList.add('collapsed');
+            }
+        }
+        
+        // Prevent iframe scrolling issues
+        document.addEventListener('DOMContentLoaded', function() {
+            // Optional: Auto-collapse all sections initially for better iframe fit
+            // Uncomment the lines below if you want all sections collapsed by default
+            /*
+            const allTopics = document.querySelectorAll('.topic-title');
+            allTopics.forEach(topic => {
+                const subtopics = topic.nextElementSibling;
+                subtopics.classList.add('collapsed');
+                topic.classList.add('collapsed');
+            });
+            */
+        });
+        
+        // Prevent context menu for cleaner iframe experience
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
